@@ -512,7 +512,7 @@ type Include struct {
 	// ordering
 	matches []string
 	// actual filenames are listed here
-	files        map[string]*Config
+	Files        map[string]*Config
 	leadingSpace int
 	position     Position
 	depth        uint8
@@ -552,7 +552,7 @@ func NewInclude(directives []string, hasEquals bool, pos Position, comment strin
 	inc := &Include{
 		Comment:      comment,
 		directives:   directives,
-		files:        make(map[string]*Config),
+		Files:        make(map[string]*Config),
 		position:     pos,
 		leadingSpace: pos.Col - 1,
 		depth:        depth,
@@ -582,7 +582,7 @@ func NewInclude(directives []string, hasEquals bool, pos Position, comment strin
 		if err != nil {
 			return nil, err
 		}
-		inc.files[matches[i]] = config
+		inc.Files[matches[i]] = config
 	}
 	return inc, nil
 }
@@ -599,7 +599,7 @@ func (inc *Include) Get(alias, key string) string {
 	defer inc.mu.Unlock()
 	// TODO: we search files in any order which is not correct
 	for i := range inc.matches {
-		cfg := inc.files[inc.matches[i]]
+		cfg := inc.Files[inc.matches[i]]
 		if cfg == nil {
 			panic("nil cfg")
 		}
